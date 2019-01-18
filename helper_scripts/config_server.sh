@@ -4,10 +4,12 @@ set -ex
 
 FRR_VERSION=6.0
 FRR_DOWNLOAD=https://github.com/FRRouting/frr/releases/download
-    
+
+# Install FRR
 curl -fLsO ${FRR_DOWNLOAD}/frr-${FRR_VERSION}/frr_${FRR_VERSION}-1.ubuntu18.04+1_amd64.deb
 apt install -y ./frr_${FRR_VERSION}-1.ubuntu18.04+1_amd64.deb
 
+# Enable BGP and Zebra daemons of FRR
 cat << EOT > /etc/frr/daemons
 bgpd=yes
 zebra=yes
@@ -36,6 +38,7 @@ router bgp 65001
 !
 EOT
 
+# Interfaces-Configuration
 cat << EOT > /etc/network/interfaces
 auto lo
 iface lo inet static
@@ -53,9 +56,9 @@ EOT
 apt install -y ifupdown
 ip addr add 10.0.0.${SERVER_ID}/32 dev lo
 ip addr add 10.0.0.50/32 dev lo
-
 ifup eth1
 
+# Sysctl-Settings recommended for FRR
 cat << EOT > /etc/sysctl.d/99-frr.conf
 # /etc/sysctl.d/99frr_defaults.conf
 # Place this file at the location above and reload the device.
@@ -112,9 +115,10 @@ net.ipv4.tcp_l3mdev_accept=1
 EOT
 
 sysctl -p /etc/sysctl.d/99-frr.conf
-sysctl -w net.ipv6.conf.eth1.disable_ipv6=0
-
 systemctl start frr
+
+# Fix to have a IPv6 Link-Local-Address at eth1
+sysctl -w net.ipv6.conf.eth1.disable_ipv6=0
 
 apt update
 apt install -y docker.io
@@ -123,5 +127,5 @@ docker pull nginx
 echo "${SERVER_ID}" > index.html
 docker run -d -p 8080:80 -v $PWD/index.html:/usr/share/nginx/html/index.html nginx                                                       
 
-# delete default route via vagrant interface
+# delete default route to vagrant bridge
 sudo ip route del default via 10.255.1.1 dev eth0

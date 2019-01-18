@@ -2,3 +2,4 @@
 src/cldemo-vagrant
 src/Vagrantfile
 src/dhcp_mac_map
+src/helper_scripts

@@ -16,7 +16,7 @@ Vagrant.require_version ">= 2.0.2"
 Vagrant.configure("2") do |config|
   wbid = 1
   offset = wbid * 100
-  device.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.provider :libvirt do |domain|
     domain.management_network_address = "10.255.#{wbid}.0/24"
     domain.management_network_name = "wbr#{wbid}"
