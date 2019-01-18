@@ -1,1 +1,4 @@
 .vagrant
+src/cldemo-vagrant
+src/Vagrantfile
+src/dhcp_mac_map
