@@ -8,7 +8,6 @@ FRR_DOWNLOAD=https://github.com/FRRouting/frr/releases/download
 curl -fLsO ${FRR_DOWNLOAD}/frr-${FRR_VERSION}/frr_${FRR_VERSION}-1.ubuntu18.04+1_amd64.deb
 apt install -y ./frr_${FRR_VERSION}-1.ubuntu18.04+1_amd64.deb
 
-
 cat << EOT > /etc/frr/daemons
 bgpd=yes
 zebra=yes
@@ -116,3 +115,13 @@ sysctl -p /etc/sysctl.d/99-frr.conf
 sysctl -w net.ipv6.conf.eth1.disable_ipv6=0
 
 systemctl start frr
+
+apt update
+apt install -y docker.io
+docker pull nginx
+
+echo "${SERVER_ID}" > index.html
+docker run -d -p 8080:80 -v $PWD/index.html:/usr/share/nginx/html/index.html nginx                                                       
+
+# delete default route via vagrant interface
+sudo ip route del default via 10.255.1.1 dev eth0

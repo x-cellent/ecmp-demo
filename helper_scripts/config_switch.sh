@@ -5,7 +5,6 @@ echo "  Running Switch Post Config (config_switch.sh)"
 echo "#################################"
 sudo su
 
-
 ## Convenience code. This is normally done in ZTP.
 
 # Make DHCP occur without delays
@@ -59,8 +58,13 @@ line vty
 EOT
 systemctl start frr
 
+# Use L4 information for Multipath-Hashing
+sysctl -w net.ipv4.fib_multipath_hash_policy=1
+
+# SNAT packets to servers at swp1 and swp2
+iptables -t nat -A POSTROUTING -o swp2 -s 10.255.1.1/24  -j SNAT --to 10.0.0.99
+iptables -t nat -A POSTROUTING -o swp1 -s 10.255.1.1/24  -j SNAT --to 10.0.0.99
+
 echo "#################################"
 echo "   Finished"
 echo "#################################"
-
-
