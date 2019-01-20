@@ -11,3 +11,5 @@ Test with curl:
 ```bash
 curl http://10.0.0.50:8080
 ```
+
+![Network topology](./topology.svg)
