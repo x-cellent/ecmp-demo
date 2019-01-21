@@ -34,3 +34,5 @@ Test with curl from your pc; you should randomly get a response `A` or `B`:
 ```bash
 curl http://10.0.0.50:8080
 ```
+
+![Network topology](./topology.svg)
