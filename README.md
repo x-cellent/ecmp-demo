@@ -13,7 +13,9 @@ Also contained in the demo:
 * Vagrant >= 2.0.2
 * Libvirt Plugin: `vagrant plugin install libvirt`
 
-![Demo](ecmp_anycast.png)
+## Network Topology
+
+![Network topology](./topology.svg)
 
 ## Usage
 
@@ -34,5 +36,3 @@ Test with curl from your pc; you should randomly get a response `A` or `B`:
 ```bash
 curl http://10.0.0.50:8080
 ```
-
-![Network topology](./topology.svg)
