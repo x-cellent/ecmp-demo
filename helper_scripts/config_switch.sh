@@ -49,7 +49,8 @@ router bgp 65099
  neighbor swp2 interface peer-group FABRIC
  !
  address-family ipv4 unicast
-  neighbor FABRIC activate
+  neighbor swp1 default-originate
+  neighbor swp2 default-originate
   redistribute connected
  exit-address-family
 !

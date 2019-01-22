@@ -115,7 +115,6 @@ net.ipv4.tcp_l3mdev_accept=1
 EOT
 
 sysctl -p /etc/sysctl.d/99-frr.conf
-systemctl start frr
 
 # Fix to have a IPv6 Link-Local-Address at eth1
 sysctl -w net.ipv6.conf.eth1.disable_ipv6=0
@@ -126,8 +125,7 @@ docker pull nginx
 
 echo "${SERVER_ID}" > index.html
 docker run -d -p 8080:80 -v $PWD/index.html:/usr/share/nginx/html/index.html nginx                                                       
-
-sleep 5
-
 # delete default route to vagrant bridge
 sudo ip route del default via 10.255.1.1 dev eth0
+
+systemctl restart frr
