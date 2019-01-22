@@ -127,5 +127,7 @@ docker pull nginx
 echo "${SERVER_ID}" > index.html
 docker run -d -p 8080:80 -v $PWD/index.html:/usr/share/nginx/html/index.html nginx                                                       
 
+sleep 5
+
 # delete default route to vagrant bridge
 sudo ip route del default via 10.255.1.1 dev eth0
